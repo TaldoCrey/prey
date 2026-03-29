@@ -8,6 +8,6 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/TaldoCrey/prey"
 readme = "README.md"
 keywords = ["proxy", "networking", "packet-engine", "load-balancer", "firewall"]
-categories = ["network-programming", "asyncronous"]
+categories = ["network-programming", "asynchronous"]
 
 [dependencies]
