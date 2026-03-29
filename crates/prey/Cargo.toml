@@ -8,5 +8,6 @@ license.workspace = true
 repository.workspace = true
 keywords = ["proxy", "networking", "packet-engine", "load-balancer", "firewall"]
 categories = ["network-programming", "asynchronous"]
+readme = "README.md"
 
 [dependencies]
