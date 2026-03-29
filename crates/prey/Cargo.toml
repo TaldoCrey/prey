@@ -6,7 +6,6 @@ authors.workspace = true
 description = "PREY: A high-performance Packet Routing Engine Yield and Proxy framework."
 license.workspace = true
 repository.workspace = true
-readme = "README.md"
 keywords = ["proxy", "networking", "packet-engine", "load-balancer", "firewall"]
 categories = ["network-programming", "asynchronous"]
 
