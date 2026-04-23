@@ -12,6 +12,9 @@ To provide a modular and memory-safe infrastructure for:
 - High-throughput Load Balancing
 - User-space Firewalls (PREY-Fire)
 
+## What is done so far?
+- Buffer structure.
+
 Created by **Renan Machado Santos**. Built for performance.
 
 [![Crates.io](https://img.shields.io/crates/v/prey.svg)](https://crates.io/crates/prey)

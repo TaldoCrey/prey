@@ -11,3 +11,4 @@ categories = ["network-programming", "asynchronous"]
 readme = "README.md"
 
 [dependencies]
+crossbeam-queue = "0.3.12"
