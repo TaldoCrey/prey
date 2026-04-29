@@ -21,11 +21,11 @@ const BUFFER_SIZE: usize = 2048;
 /// - size: `usize` - Size of useful data in buffer.
 /// - pool: `Arc<BufferPool>` - Reference to parent buffer pool.
 pub struct Buffer {
-    ptr: *mut u8,
-    capacity: usize,
-    head: usize,
-    size: usize,
-    pool: Arc<BufferPool>
+    pub ptr: *mut u8,
+    pub capacity: usize,
+    pub head: usize,
+    pub size: usize,
+    pub pool: Arc<BufferPool>
 }
 
 impl Drop for Buffer {
@@ -37,6 +37,80 @@ impl Drop for Buffer {
     }
 }
 
+impl Buffer {
+    /// # fn as_mut_slice
+    /// Get the next writable slice of the buffer.
+    ///
+    /// # Params
+    /// - &mut self - Mutable reference to the manipulated buffer.
+    ///
+    /// # Returns
+    /// The address to a `slice of u8` that represents the writable slice of the buffer.
+    pub fn as_mut_slice(&mut self) -> &mut [u8] {
+        unsafe {
+            let start_ptr = self.ptr.add(self.head + self.size);
+            let available_space = self.capacity - (self.head + self.size);
+            std::slice::from_raw_parts_mut(start_ptr, available_space)
+        }
+    }
+
+    /// # fn advance
+    /// Advances the variable that keeps track of the end of buffer data. Used after data was written in buffer.
+    ///
+    /// # Params
+    /// - &mut self - Mutable reference to the manipulated buffer.
+    /// - n: `usize` - size of data that was inserted in buffer.
+    pub fn advance(&mut self, n: usize) {
+        self.size += n;
+    }
+
+    /// # fn data
+    /// Get buffer's data.
+    ///
+    /// # Params
+    /// - &mut self - Mutable reference to the manipulated buffer.
+    ///
+    /// # Returns
+    /// A `u8 slice` reference containing all buffer's data.
+    pub fn data(&self) -> &[u8] {
+        unsafe {
+            std::slice::from_raw_parts(self.ptr.add(self.head), self.size)
+        }
+    }
+
+    /// # fn data
+    /// Get buffer's data, but allows overwriting (for editing purposes).
+    ///
+    /// # Params
+    /// - &mut self - Mutable reference to the manipulated buffer.
+    ///
+    /// # Returns
+    /// A `u8 slice` reference containing all buffer's data.
+    pub fn data_mut(&mut self) -> &mut [u8] {
+        unsafe {
+            std::slice::from_raw_parts_mut(self.ptr.add(self.head), self.size)
+        }
+    }
+
+    /// # fn prepend
+    /// Allows writing a header into the 128 bytes of buffer's headroom, **only if it fits there**.
+    ///
+    /// # Params
+    /// - &mut self - Mutable reference to the manipulated buffer.
+    /// - header: `&[u8]` - Header that will be written as bytes.
+    pub fn prepend(&mut self, header: &[u8]) {
+        let len = header.len();
+        if len <= self.head {
+            self.head -= len;
+            self.size += len;
+            unsafe {
+                let start = self.ptr.add(self.head);
+                std::ptr::copy_nonoverlapping(header.as_ptr(), start, len);
+            }
+        }
+    }
+}
+
 /// # BufferPool
 /// structure that holds all the space buffers will need.
 ///
@@ -45,9 +119,9 @@ impl Drop for Buffer {
 /// - capacity: `usize` - Total size of Buffer Pull memory area.
 /// - available: `ArrayQueue<*mut u8>` - Array that holds all buffer sections start points.
 pub struct BufferPool {
-    storage: *mut u8,
-    capacity: usize,
-    available: ArrayQueue<*mut u8>
+    pub storage: *mut u8,
+    pub capacity: usize,
+    pub available: ArrayQueue<*mut u8>
 }
 
 impl BufferPool {

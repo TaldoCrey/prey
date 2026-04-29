@@ -15,9 +15,8 @@
 //! It uses an efficient memory layout to prevent unnecessary space allocation,
 //! using cache lines fixed on 64 bits per line.
 //!
-//! Buffers have a fixed size of 2048 bytes, but they aren't fully filled with
-//! information. Since normal Network packets does not exceed 1500 bytes of length
-//! PREY buffers will be able to contain all packets' info and still be able to
-//! add new data to it, without the need to expand the buffer size.
+//! Buffers have a fixed size of 2048 bytes, and PREY uses the headroom strategy to allow
+//! further headers adding without the need of creating another buffer. That way, the network
+//! packets fit in the buffer and proxies and firewalls can easily add headers in the response.
 
 pub mod buffer;

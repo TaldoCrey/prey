@@ -9,11 +9,16 @@ It is designed to be a robust engine for packet routing, reverse proxies, and us
 ## Vision
 To provide a modular and memory-safe infrastructure for:
 - Layer 4/7 Reverse Proxying
-- High-throughput Load Balancing
-- User-space Firewalls (PREY-Fire)
+- High-throughput Load Balancing (Prey-Proxy)
+- User-space Firewalls (Prey-Fire)
 
 ## What is done so far?
-- Initial buffer structure.
+- ### Buffer Module
+  - Buffer Pool Structure and functionality
+    - Creation and buffers sectorization
+  - Buffer Structure and functionality
+    - Reading, Writing and Editing data functions.
+
 
 Created by **Renan Machado Santos**. Built for performance.
 
